@@ -4,6 +4,7 @@ const Home = () => {
   const [posts, setPosts] = useState([]);
   const [paginatedPosts, setPaginatedPosts] = useState([]);
   const [page, setPage] = useState(0);
+  const [searchTitle, setSearchTitle] = useState("");
   const perPage = 5;
 
   useEffect(() => {
@@ -30,8 +31,24 @@ const Home = () => {
     setPage(page - 1);
   };
 
+  const handleSearch = (event) => {
+    let value = event.target.value.toLowerCase();
+    setSearchTitle(event.target.value);
+    let paginatedFilteredPosts = posts.filter((post) => {
+      let { title } = post;
+      return title.toLowerCase().includes(value);
+    });
+    setPaginatedPosts(paginatedFilteredPosts);
+  };
+
   return (
     <Fragment>
+      <input
+        style={{ width: "20%", marginLeft: "40%" }}
+        value={searchTitle}
+        placeholder="Search Title"
+        onChange={handleSearch}
+      ></input>
       {paginatedPosts.map((post, index) => (
         <div key={index} className="posts">
           <div className="post">
